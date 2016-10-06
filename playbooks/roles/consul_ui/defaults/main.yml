@@ -1,0 +1,6 @@
+---
+
+consul_ui_port: 8080
+
+consul_ui_user: admin
+consul_ui_password: admin

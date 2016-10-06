@@ -1,0 +1,11 @@
+---
+
+- hosts: consuls
+  gather_facts: no
+  roles:
+  - consul
+
+- hosts: consul_uis
+  gather_facts: no
+  roles:
+  - consul_ui

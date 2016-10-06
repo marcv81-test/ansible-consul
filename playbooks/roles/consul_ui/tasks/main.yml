@@ -1,0 +1,16 @@
+---
+
+- name: Consul UI password is defined
+  htpasswd:
+    path: /etc/nginx/consul_ui_auth
+    name: "{{ consul_ui_user }}"
+    password: "{{ consul_ui_password }}"
+
+- name: Nginx is configured for Consul UI
+  template:
+    src: consul_ui.conf.template
+    dest: /etc/nginx/conf.d/consul_ui.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart Nginx

@@ -1,0 +1,11 @@
+server {
+  listen {{ consul_ui_port }} default_server;
+  server_name _;
+
+  auth_basic "Consul UI";
+  auth_basic_user_file /etc/nginx/consul_ui_auth;
+
+  location / {
+    proxy_pass http://localhost:8500;
+  }
+}

@@ -1,0 +1,48 @@
+---
+
+- name: Packages list is installed
+  copy:
+    src: marcv81.list
+    dest: /etc/apt/sources.list.d/marcv81.list
+    owner: root
+    group: root
+    mode: 0644
+  register: consul_apt_sources
+
+- name: Packages list is up to date (if sources were added)
+  apt:
+    update_cache: yes
+  when: consul_apt_sources.changed
+
+- name: Packages list is up to date (if cache expired)
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Consul is installed
+  apt:
+    name: consul
+    state: present
+    force: yes
+
+- name: Node configuration is installed
+  template:
+    src: node.json.template
+    dest: /etc/consul/node.json
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Server configuration is installed
+  template:
+    src: server.json.template
+    dest: /etc/consul/server.json
+    owner: root
+    group: root
+    mode: 0644
+  when: "'consul_servers' in group_names"
+
+- name: Service is started
+  service:
+    name: consul
+    state: started

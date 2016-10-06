@@ -1,0 +1,6 @@
+{
+  "node_name": "{{ inventory_hostname }}",
+  "bind_addr": "{{ ansible_ssh_host }}",
+  "encrypt": "{{ consul_encryption_key }}",
+  "start_join": [{% for host in groups['consul_servers'] %}"{{ hostvars[host]['ansible_ssh_host'] }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+}
